@@ -1,4 +1,4 @@
-a = input()
+a = input("Please, enter the string: ")
 answer = ""
 i = 0
 while i < len(a):

@@ -1,4 +1,4 @@
-a = input()
+a = input("Please, enter the code from first exersize: ")
 answer = ""
 i = 0
 while i < len(a):
