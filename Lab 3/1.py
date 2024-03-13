@@ -2,7 +2,7 @@ a = input("Please, enter the string: ")
 answer = ""
 i = 0
 while i < len(a):
-	if i >= len(a) - 1:
+	if i == len(a) - 1:
 		answer += a[i]
 		break
 	counter = 1
@@ -13,6 +13,6 @@ while i < len(a):
 	answer += a[i]
 	if counter != 1:
 		answer += str(counter)
-		i += counter
+		i += counter - 1
 	i += 1
-print(answer)
+print("The shortened variant is:", answer)

@@ -11,4 +11,4 @@ while i < len(a):
 	else:
 		answer += a[i]
 	i += 1
-print(answer)
+print("The unshortened variant is:", answer)
