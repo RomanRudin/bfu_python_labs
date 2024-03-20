@@ -1,0 +1,1 @@
+print(f'The answer is: {len(set(map(int, input("Please, enter the numbers: ").split())))}')
