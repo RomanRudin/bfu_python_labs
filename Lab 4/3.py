@@ -1,9 +1,9 @@
-data = {}
-inp = input("Please, enter the text: ").replace(',.!?:;"()\t\n', '').split()
-answer = ''
-for word in inp:
-    if not word in data.keys():
-        data[word] = -1
-    data[word] += 1
-    answer += str(data[word]) + ' '
-print(answer)
+n = int(input("Please, enter the number of cities: "))
+cities = set()
+for i in range(n):
+    city = input("Please, enter the city: ").strip().lower()
+    if city in cities:
+        print("REPEAT")
+    else:
+        cities.add(city)
+        print("OK")
