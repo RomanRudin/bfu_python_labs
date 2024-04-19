@@ -47,19 +47,41 @@ def show(data: list[dict], param="top", num=5, separator=", ") -> None:
         case _:
             raise "In 'show()' in arguement 'type': type can only be 'top', 'bottom' or 'random'"
         
+def type_detection(item: str) -> str:
+    try:
+        temp = int(item)
+        return "int"
+    except: pass
+    try:
+        temp = float(item)
+        return "float"
+    except: pass
+    return "str"
+
+    
 def info(data: list[dict]) -> None:
     print(f"Size of the table: {len(data)} x {len(data[0].keys())}")
     notNaN = dict.fromkeys(list(data[0].keys()), 0)
+    types = {}
+    for key, val in data[0].items():
+        types.update({key: {type_detection(val): 1}})
     for row in data:
         for key, value in row.items():
             notNaN[key] += 1 if (value != "") else 0
-    for key, val in notNaN.items():
-        print(str(key).ljust(15), str(val).ljust(8), str(type(data[0][key])).removeprefix("<class '").removesuffix("'>"))
+            curtype = type_detection(value)
+            if not curtype in types[key].keys():
+                types[key][curtype] = 0
+            types[key][curtype] += 1
+    for (keyNotNaN, valNotNaN), (dataTypes) in zip(notNaN.items(), types.values()):
+        print(str(keyNotNaN).ljust(15), str(valNotNaN).ljust(8), sorted(dataTypes, key=lambda x: dataTypes[x], reverse=True)[0])
 
 def delNaN(data: list[dict]) -> list[dict]:
-    for index, row in enumerate(data):
-        if any([val == "" or val == " " for val in row.values()]):
-            data.pop(index)
+    i = 0
+    while i < len(data) :
+        if any(val == "" for val in data[i].values()):
+            data.pop(i)
+            i -= 1
+        i += 1
     return data
 
 def makeDS(data: list[dict])  -> None:
