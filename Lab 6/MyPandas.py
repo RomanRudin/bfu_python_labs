@@ -47,7 +47,7 @@ def show(data: list[dict], param="top", num=5, separator=", ") -> None:
         case _:
             raise "In 'show()' in arguement 'type': type can only be 'top', 'bottom' or 'random'"
         
-def type_detection(item: str) -> str:
+def __type_detection(item: str) -> str:
     try:
         temp = int(item)
         return "int"
@@ -64,11 +64,11 @@ def info(data: list[dict]) -> None:
     notNaN = dict.fromkeys(list(data[0].keys()), 0)
     types = {}
     for key, val in data[0].items():
-        types.update({key: {type_detection(val): 1}})
+        types.update({key: {__type_detection(val): 1}})
     for row in data:
         for key, value in row.items():
             notNaN[key] += 1 if (value != "") else 0
-            curtype = type_detection(value)
+            curtype = __type_detection(value)
             if not curtype in types[key].keys():
                 types[key][curtype] = 0
             types[key][curtype] += 1
@@ -84,6 +84,23 @@ def delNaN(data: list[dict]) -> list[dict]:
         i += 1
     return data
 
-def makeDS(data: list[dict])  -> None:
-    import random
-    pass
+def makeDS(data: list[dict], test_percent = 0.3)  -> None:
+    import random, csv, os
+    if not os.path.exists("train"):
+        os.makedirs("train")
+    if not os.path.exists("test"):
+        os.makedirs("test")
+    test_nums = set()
+    while (len(test_nums) < int(len(data) * test_percent)):
+        test_nums.add(random.randint(0, len(data) - 1))
+    with open("train/train.csv", 'w', encoding="utf-8", newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(data[0].keys())
+        for index, line in enumerate(data):
+            if not index in test_nums:
+                writer.writerow(line.values())
+    with open("test/test.csv", 'w', encoding="utf-8", newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(data[0].keys())
+        for index in test_nums:
+            writer.writerow(data[index].values())
