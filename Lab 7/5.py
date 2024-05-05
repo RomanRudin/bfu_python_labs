@@ -1,31 +1,37 @@
 import numpy as np
 import scipy
-from math import *
-#Function for multivariate normal is:
-# exp( - 0.5 * (x - m)T * m ** -1 * (x - m)) / sqrt(2 * pi ** rank(c) * det(c))
+from time import perf_counter
+
 def timer(function):
-    def wrapper(function):
-      pass
+    def wrapper(*args, **kwargs):
+        start = perf_counter() 
+        result = function(*args, **kwargs) 
+        end = perf_counter() 
+        print(f'Function {function.__name__} executed in {(end-start)}s') 
+        return result 
+    return wrapper 
 
 @timer
-def multivariate_normal_logpdf(x, m, c):
-  """
-  Computes the logarithmic density of a multivariate normal distribution.
-
-  Args:
-    x: A numpy array of shape (n, d), where n is the number of data points and d is the dimensionality of the distribution.
-    mean: A numpy array of shape (d,) representing the mean of the distribution.
-    cov: A numpy array of shape (d, d) representing the covariance matrix of the distribution.
-
-  Returns:
-    A numpy array of shape (n,) containing the logarithmic density of each data point.
-  """
-  
-  quad_form = np.einsum('ij,ij->i', x - mean, np.dot(np.linalg.inv(c), x - mean))
+def multivariate_normal_logpdf(x: np.array, m: np.array, c: np.array) -> np.array:
+  quad_form = np.einsum('ij,ij->i', x - m, np.dot(np.linalg.inv(c), x - m))
   logpdf = -0.5 * (np.log(2 * np.pi) + np.log(np.linalg.det(c)) + quad_form)
   return logpdf
 
-
 @timer
-def using_scipy(m, c, x):
-    return scipy.stats.multivariate_normal(m, C).logpdf(x)
+def using_scipy(x: np.array, m: np.array, c: np.array) -> np.array:
+    return scipy.stats.multivariate_normal(m, c).logpdf(x)
+
+
+x = np.array([[1, 2], [3, 4]])
+m = np.array([0, 0])
+c = np.array([[1, 0.5], [0.5, 2]])
+
+
+result1 = multivariate_normal_logpdf(x, m, c)
+print(f"The result of my function is: {result1}")
+print()
+result2 = using_scipy(x, m, c)
+print(f"The result of function using scipy is: {result2}")
+print()
+difference = np.array(abs((result2 - result1) / result1))
+print(f"Difference between those two answers (on average) is {difference.sum() / len(difference)} parts of the first result.")
