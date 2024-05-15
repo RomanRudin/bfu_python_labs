@@ -13,5 +13,5 @@ def animate(i):
     figure.clear()
     plt.plot(x[i], y[i])
 
-anim = FuncAnimation(figure, animate, frames=100, interval=20)
+anim = FuncAnimation(figure, animate, frames=100, interval=10)
 plt.show()
