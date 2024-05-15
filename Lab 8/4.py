@@ -40,8 +40,8 @@ class ChangebleGraphic():
         axfreq = self.figure.add_subplot(spec[place * 2, 2])
         axamp = self.figure.add_subplot(spec[place * 2 + 1, 2])
 
-        self.slider_freq = Slider(axfreq, 'Freq', 0.1, 10.0, valinit=self.frequency)
-        self.slider_amp = Slider(axamp, 'Amp', 0.1, 10.0, valinit=self.amplitude)
+        self.slider_freq = Slider(axfreq, 'Freq', 0.1, 10.0, valinit=self.frequency, valfmt="%f")
+        self.slider_amp = Slider(axamp, 'Amp', 0.1, 10.0, valinit=self.amplitude, valfmt="%f")
         self.slider_freq.on_changed(self.update)
         self.slider_amp.on_changed(self.update)
 
