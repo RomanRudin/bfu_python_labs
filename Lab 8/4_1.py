@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.widgets import Slider
 
-number_of_waves = 4 #up to 4, I think, will be great
-if number_of_waves > 4:
-    raise "Number waves is better to be less than 5"
+number_of_waves = 3 #up to 4, I think, will be great
+if number_of_waves > 4 or number_of_waves < 1 or type(number_of_waves) != type(2):
+    raise "Number waves needs to be a positive integer less than 5"
 
 colors = ['red', 'blue', 'yellow', 'green']
 
