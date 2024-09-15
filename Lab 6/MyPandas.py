@@ -96,7 +96,7 @@ def info(data: list[dict]) -> None:
     #TODO Probably in need of optimisation
     for row in data:
         for key, value in row.items():
-            notNaN[key] += 1 if (value != "") else 0
+            notNaN[key] += (1 if (value != "") else 0)
             curtype = __type_detection(value)
             if not curtype in types[key].keys():
                 types[key][curtype] = 0
